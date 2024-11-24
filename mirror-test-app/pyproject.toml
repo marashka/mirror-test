@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "mirror-test"
+version = "0.1.0"
+description = ""
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "^0.115.5"
+uvicorn = {extras = ["standard"], version = "^0.32.1"}
+pydantic-settings = "^2.6.1"
+sqlalchemy = {extras = ["asyncio"], version = "^2.0.36"}
+asyncpg = "^0.30.0"
+alembic = "^1.14.0"
+pydantic = "^2.10.1"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.10.0"
+
