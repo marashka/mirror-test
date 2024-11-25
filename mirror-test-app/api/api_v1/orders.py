@@ -1,8 +1,10 @@
+from datetime import date
 from typing import Annotated
 
 from fastapi import (
     APIRouter,
     Depends,
+    Query,
 )
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -23,9 +25,10 @@ async def get_orders(
         AsyncSession,
         Depends(db_helper.session_getter),
     ],
+    walk_date: Annotated[date | None, Query(description="Дата прогулки")] = None,
 ):
 
-    orders = await orders_crud.get_all_orders(session=session)
+    orders = await orders_crud.get_all_orders(session=session, walk_date=walk_date)
     return orders
 
 

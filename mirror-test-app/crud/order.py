@@ -1,6 +1,7 @@
 import random
-from typing import Sequence
-from fastapi import HTTPException, status
+from datetime import date
+from typing import Sequence, Annotated
+from fastapi import HTTPException, status, Query
 from sqlalchemy import select, cast, Date
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload, selectinload, load_only, with_loader_criteria
@@ -10,9 +11,13 @@ from core.schemas.order import OrderCreate
 
 
 async def get_all_orders(
-    session: AsyncSession,
+    session: AsyncSession, walk_date: date | None
 ) -> Sequence[Order]:
-    stmt = select(Order).options(joinedload(Order.dog_walker)).order_by(Order.id)
+    stmt = select(Order).options(joinedload(Order.dog_walker)).order_by(Order.walk_date)
+
+    if walk_date:
+        stmt = stmt.filter(cast(Order.walk_date, Date) == walk_date)
+
     result = await session.scalars(stmt)
     return result.all()
 
